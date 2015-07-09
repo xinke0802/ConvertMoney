@@ -22,11 +22,10 @@ public class Convert{
             return null;
         }
         cnNumStr = cnNumStr.replaceAll("整", "");
-       
+        cnNumStr = cnNumStr.replaceAll("零", "");
         for (int i = 0; i < cnNumbers.length; i++) {
             cnNumStr = cnNumStr.replace(cnNumbers[i], stdNumbers[i]);
         }
-        System.out.println(cnNumStr);
         char[] cnNumStrArray = cnNumStr.toCharArray();
         String standardNumStr = "";
         //补齐操作，标准化格式
@@ -45,6 +44,7 @@ public class Convert{
             				//如果可以，说明是数字
             				Integer.parseInt(cnNumStrArray[index]+"");
             				standardNumStr = cnNumStrArray[index] + "" + units[j] + standardNumStr;
+            				index = index -1;
             			}catch (Exception e) {
 							//说明不是数字
             				standardNumStr = "0" + units[j] + standardNumStr;
@@ -60,6 +60,7 @@ public class Convert{
             				//如果可以，说明是数字
             				Integer.parseInt(cnNumStrArray[index]+"");
             				standardNumStr = cnNumStrArray[index] + "" + units[j] + standardNumStr;
+            				index = index -1;
             			}catch (Exception e) {
 							//说明不是数字
             				standardNumStr = "0" + units[j] + standardNumStr;
@@ -81,7 +82,6 @@ public class Convert{
         		break;
         	}
         }
-        System.out.println(standardNumStr);
         if (!standardNumStr.endsWith("元") && !standardNumStr.endsWith("圆") && !standardNumStr.endsWith("园")) {
         	standardNumStr = standardNumStr.replaceAll("元", ".").replaceAll("圆", ".").replaceAll("园", ".");
         }
@@ -93,12 +93,6 @@ public class Convert{
         //标准化去0操作（首尾去零）
         while(standardNumStr.startsWith("0")){
         	standardNumStr = standardNumStr.substring(1);
-        }
-        while(standardNumStr.endsWith("0")){
-        	standardNumStr = standardNumStr.substring(0, standardNumStr.length()-1);
-        }
-        if(standardNumStr.endsWith(".")){
-        	standardNumStr = standardNumStr.substring(0, standardNumStr.length()-1);
         }
         return standardNumStr;
     }
