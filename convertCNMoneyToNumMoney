@@ -21,8 +21,12 @@ public class Convert{
         if (null == cnNumStr || "".equals(cnNumStr.trim())) {
             return null;
         }
+        //防止只有小数位的货币（如伍分、玖角柒分叁厘）
+        cnNumStr = "零元" + cnNumStr;
         cnNumStr = cnNumStr.replaceAll("整", "");
         cnNumStr = cnNumStr.replaceAll("零", "");
+        cnNumStr = cnNumStr.replaceAll("园", "元").replaceAll("圆", "元");
+        
         for (int i = 0; i < cnNumbers.length; i++) {
             cnNumStr = cnNumStr.replace(cnNumbers[i], stdNumbers[i]);
         }
@@ -38,20 +42,7 @@ public class Convert{
             		continue;
             	}
             	if(cnNumStrArray[index] != units[j]){
-            		if(units[j] == '元'){
-            			index = index - 1;
-            			try{
-            				//如果可以，说明是数字
-            				Integer.parseInt(cnNumStrArray[index]+"");
-            				standardNumStr = cnNumStrArray[index] + "" + units[j] + standardNumStr;
-            				index = index -1;
-            			}catch (Exception e) {
-							//说明不是数字
-            				standardNumStr = "0" + units[j] + standardNumStr;
-						}
-            		}else{
-            			standardNumStr = "0" + units[j] + standardNumStr;
-            		}
+            		standardNumStr = "0" + units[j] + standardNumStr;
             	}else{
             		if(units[j] == '元'){
             			//判断前面是否是数字
@@ -82,14 +73,18 @@ public class Convert{
         		break;
         	}
         }
-        if (!standardNumStr.endsWith("元") && !standardNumStr.endsWith("圆") && !standardNumStr.endsWith("园")) {
-        	standardNumStr = standardNumStr.replaceAll("元", ".").replaceAll("圆", ".").replaceAll("园", ".");
+        
+        System.out.println(standardNumStr);
+        
+        if (!standardNumStr.endsWith("元")) {
+        	standardNumStr = standardNumStr.replaceAll("元", ".");
         }
         
         for (int j = 0; j < units.length; j++) {
         	standardNumStr = standardNumStr.replaceAll(units[j] + "", "");
         }
         
+        System.out.println(standardNumStr);
         //标准化去0操作（首去零）
         while(standardNumStr.startsWith("0")){
         	if(!standardNumStr.substring(1).startsWith(".")){
