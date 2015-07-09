@@ -90,9 +90,13 @@ public class Convert{
         	standardNumStr = standardNumStr.replaceAll(units[j] + "", "");
         }
         
-        //标准化去0操作（首尾去零）
+        //标准化去0操作（首去零）
         while(standardNumStr.startsWith("0")){
-        	standardNumStr = standardNumStr.substring(1);
+        	if(!standardNumStr.substring(1).startsWith(".")){
+        		standardNumStr = standardNumStr.substring(1);
+        	}else{
+        		break;
+        	}
         }
         return standardNumStr;
     }
